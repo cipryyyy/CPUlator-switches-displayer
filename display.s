@@ -89,14 +89,16 @@ _load:
 	ldr r3, [r6, r2, lsl #2]	@load the corresponding value
 	mov r4, r1, lsl #1				@doubles the index
 	add r9, r3, lsl r4			@sum the value to show
-	str r9, [r10]				@store and show the value
+	mov r4, r1, lsr #1				@doubles the index
 	add r1, #4					@shift the display index
 	add r7, #4					@shift the memory index
 	cmp r1, #0x10					@check if display is full, if true
-	ldreq r10, =digits2 			@prepare second display
-	moveq r1, #0					@reset display offset
-	addeq r8, #1					@increment the controller
-	moveq r9, #0					@reset the ouptput
+	bne _load
+	str r9, [r10]				@store and show the value
+	ldr r10, =digits2 			@prepare second display
+	mov r1, #0					@reset display offset
+	add r8, #1					@increment the controller
+	mov r9, #0					@reset the ouptput
 	cmp r8, #2					@check status
 	beq _end					@quit
 	b _load						@else: loop
