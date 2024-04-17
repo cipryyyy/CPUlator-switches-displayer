@@ -74,7 +74,6 @@ _store:
 @r8: status of the program (#0 store in first display, #1 store in second, #2 quit)
 @r9: final output
 @r10: display location
-@r11: temp (just to double the value of r1, idk how to improve it :) )
 _disp:
 @set everything needed
 	ldr r0, =store		@load the address of the stored value
@@ -83,12 +82,12 @@ _disp:
 	mov r9, #0			@reset the final output
 	mov r8, #0			@reset the status
 	mov r7, #0			@reset the memory offset
-	mov r11, #2			@temp value
 	ldr r6, =numbers	@load the vector address
 _load:
+@load the cyphers to display
 	ldr r2, [r0, r7]			@read current digit and load
 	ldr r3, [r6, r2, lsl #2]	@load the corresponding value
-	mul r4, r1, r11				@doubles the index
+	mov r4, r1, lsl #1				@doubles the index
 	add r9, r3, lsl r4			@sum the value to show
 	str r9, [r10]				@store and show the value
 	add r1, #4					@shift the display index
