@@ -27,7 +27,7 @@
 
 @datas
 .bss
-	store: .space 32 @8x4 bit
+	store: .space 32 @8x4 byte
 .data
 	@pointer array
 	numbers: .word zero, one, two, three, four, five, six, seven, eight, nine, hexa, hexb, hexc, hexd, hexe, hexf
@@ -53,15 +53,11 @@ _split:
 	mov r3, r0, lsr r2		@copy the value and shift to the right, get rid of right digits
 	mov r3, r3, lsl r1		@shift to the left, get rid of left digits
 	mov r3, r3, lsr r1		@shift to the right, easier for the display part
-	bl _store				@store the value
+	str r3, [r4, r2]		@shift to desired registered
 	add r2, #4				@move to the next cypher (4 bit shift)
 	cmp r2, r1				@check if reached the last digit
 	ble _split				@loop if false
 	b _disp					@write all the cyphers
-_store:
-@store the value in memory
-	str r3, [r4, r2]		@shift to desired registered
-	mov pc, lr				@return
 
 @registers usage:
 @r0: stored value position
